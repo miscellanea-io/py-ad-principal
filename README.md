@@ -1,6 +1,6 @@
 # Py-AD-Principal
 
-A Python package for authenticating users (user principals) via a Microsoft Active Directory (AD) domain. This module supports **Linux-based** services and service  principals, and is tested against an AD controller configured as described in the official Samba 4 [documentation](https://wiki.samba.org/index.php/Setting_up_Samba_as_an_Active_Directory_Domain_Controller).
+A Python package for authenticating users (more formally called *principals*) via a Microsoft Active Directory (AD) domain controller. This module supports **Linux-based** services and service  principals, and is tested against an AD controller configured as described in the official Samba 4 [documentation](https://wiki.samba.org/index.php/Setting_up_Samba_as_an_Active_Directory_Domain_Controller).
 
 Prerequisites
 =============
