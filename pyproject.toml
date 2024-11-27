@@ -3,10 +3,10 @@ requires = ["flit_core >= 3.4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "py_ad_principal_jhallford"
-version = "0.1.0"
+name = "py_ad_principal"
+version = "0.1.1"
 authors = [{"name"="Jason Hallford", "email"="jason.hallford@gmail.com"}]
-description = "A Python package for authenticating users (more formally called *principals*) via a Microsoft Active Directory (AD) domain controller."
+description = "A Python package for authenticating users (more formally called principals) via a Microsoft Active Directory (AD) domain controller."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
