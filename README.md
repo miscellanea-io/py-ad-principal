@@ -104,7 +104,7 @@ use_tls = true
 search_base = "CN=Users,DC=domain,DC=local"
 nested_groups = false
 anonymous_bind = false
-bind_user = "DOMAIN\HTTP"
+bind_user = "DOMAIN\\HTTP"
 bind_password = "MySecretPassword"
 ```
 
