@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "py_ad_principal_jhallford"
-version = "0.0.1"
+version = "0.1.0"
 authors = [{"name"="Jason Hallford", "email"="jason.hallford@gmail.com"}]
 description = "A Python package for authenticating users (more formally called *principals*) via a Microsoft Active Directory (AD) domain controller."
 readme = "README.md"
@@ -15,7 +15,7 @@ dependencies = [
 ]
 classifiers = [
     "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: Apache Software License",
+    "License :: OSI Approved :: MIT License",
     "Operating System :: POSIX :: Linux",
 ]
 keywords = [
