@@ -6,9 +6,13 @@ build-backend = "flit_core.buildapi"
 name = "py_ad_principal_jhallford"
 version = "0.0.1"
 authors = [{"name"="Jason Hallford", "email"="jason.hallford@gmail.com"}]
-description = "A Python package for authenticating users (principals) via Microsoft Active Directory."
+description = "A Python package for authenticating users (user principals) via a Microsoft Active Directory-compatible domain."
 readme = "README.md"
 requires-python = ">=3.11"
+dependencies = [
+    "gssapi >= 1.9.0",
+    "ldap3 >= 2.9.1"
+]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: Apache Software License",
