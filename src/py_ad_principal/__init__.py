@@ -1,4 +1,4 @@
-from . import (
+from .py_ad_principal import (
     AuthenticationContextConfig,
     ActiveDirectoryError,
     ActiveDirectoryPrincipal,
@@ -6,7 +6,7 @@ from . import (
     AuthenticationContext
 )
 
-__version__ = "0.1.4"
+__version__ = "0.1.5"
 __all__ = [
     "AuthenticationContextConfig",
     "ActiveDirectoryError",
