@@ -30,12 +30,12 @@ from ldap3 import (
 _logger = logging.getLogger(__name__)
 
 
-def _default_role_mapper(group: str) -> str:
+def _default_role_mapper(groups: list[str] = []) -> list[str]:
     """Default role mapper function that normalizes group names to lowercase and replaces spaces with underscores."""
-    if group:
-        return group.lower().replace(" ", "_")
+    if groups:
+        return [group.lower().replace(" ", "_") for group in groups if group]
 
-    return group
+    return []
 
 
 class AuthenticationContextConfig:
@@ -277,7 +277,7 @@ class ActiveDirectoryPrincipal:
         user_principal_name: str = None,
         display_name: str = None,
         groups: list[str] = [],
-        role_mapper: Callable[[str], str] = _default_role_mapper,
+        role_mapper: Callable[[list[str]], list[str]] = _default_role_mapper,
     ):
         """Initializes a new Active Directory principal.
 
@@ -299,7 +299,7 @@ class ActiveDirectoryPrincipal:
         )
         self._display_name = display_name
         self._groups = groups.copy() if (groups and len(groups) > 0) else groups
-        self._roles = [role_mapper(group) for group in self._groups]
+        self._roles = role_mapper(self._groups)
 
     def __repr__(self):
         return f"<User {self._principal_name}>"

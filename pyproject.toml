@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "py_ad_principal"
-version = "0.1.5"
+version = "0.2.0"
 authors = [{"name"="Jason Hallford"}]
 description = "A Python package for authenticating users (more formally called principals) via a Microsoft Active Directory (AD) domain controller."
 readme = "README.md"
