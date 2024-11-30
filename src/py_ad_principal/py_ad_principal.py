@@ -320,7 +320,7 @@ class ActiveDirectoryPrincipal:
         Returns:
             str: The sam account name.
         """
-        return self._friendly_name
+        return self._sam_account_name
 
     @property
     def user_principal_name(self) -> str:
