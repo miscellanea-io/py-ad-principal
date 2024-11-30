@@ -615,7 +615,8 @@ class AuthenticationContext:
                     role_mapper=role_mapper,
                 )
                 _logger.info(
-                    "User %s successfully authenticated via GSS API.", principal.name
+                    "User %s successfully authenticated via GSS API.",
+                    principal.principal_name,
                 )
             elif server_token:
                 b64_server_token = base64.b64encode(server_token).decode("utf-8")
