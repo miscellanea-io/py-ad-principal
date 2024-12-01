@@ -1,0 +1,13 @@
+[krb5]
+service = "TEST-SERVICE"
+hostname = "host.domain.local"
+keytab = "test-service.keytab"
+
+[ldap]
+server = "dc.domain.local"
+use_tls = true
+search_base = "CN=Users,DC=domain,DC=local"
+nested_groups = true
+anonymous_bind = false
+bind_user = "DOMAIN\\Administrator"
+bind_password = "MySecretPassword"

@@ -6,7 +6,7 @@ from .py_ad_principal import (
     AuthenticationContext
 )
 
-__version__ = "0.2.2"
+__version__ = "0.2.3"
 __all__ = [
     "AuthenticationContextConfig",
     "ActiveDirectoryError",

@@ -1,3 +1,16 @@
+"""
+This module provides a simple, high-level interface for authenticating users against Active Directory. It uses
+the GSSAPI library for Kerberos 5 (Krb5) authentication and the LDAP3 library to optionally resolve group memberships.
+These groups can be mapped to application-specific roles using a custom role mapper function.
+
+Classes:
+    - AuthenticationContextConfig: Configuration for an Active Directory authentication context.
+    - ActiveDirectoryError: Raised when an error occurs in any Active Directory operation.
+    - ActiveDirectoryPrincipal: An authenticated Active Directory user principal with an optional list of roles.
+    - AuthenticationResult: Encapsulates the result of an authentication attempt.
+    - AuthenticationContext: A context in which Krb5 ticket granting tickets (TGTs) are authenticated and
+        converted into AD principals.
+"""
 # Copyright 2024 Jason Hallford
 
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
@@ -37,13 +50,28 @@ def _default_role_mapper(groups: list[str] = []) -> list[str]:
 
     return []
 
+class ActiveDirectoryError(Exception):
+    """Raised when an error occurs in any Active Directory operation. Here, these include communication
+    with the KDC (via GSSAPI) and LDAP operations.
+
+    Args:
+        Exception (_type_): This error is a subclass of the built-in Exception class.
+    """
+
+    def __init__(self, message: str):
+        """Initializes a new Active Directory error.
+
+        Args:
+            message (str): The error message.
+        """
+        super().__init__(message)
 
 class AuthenticationContextConfig:
     """Configuration for an Active Directory authentication context. This class encapsulated logic to read
     configuration settings from a TOML file or selectively override them via environment variables.
     """
 
-    def __init__(self, config_file: str = "py_ad_principal.toml"):
+    def __init__(self, config_file: str = None):
         """Initializes a new Active Directory authentication context configuration.
 
         Args:
@@ -63,8 +91,7 @@ class AuthenticationContextConfig:
                 self._config_source = config_file
             except Exception as e:
                 raise ActiveDirectoryError(
-                    "Unable to load Active Directory configuration from %s!",
-                    config_file,
+                    f"Unable to load Active Directory configuration from {config_file}!",                    
                 ) from e
         else:
             _logger.warning(
@@ -170,7 +197,7 @@ class AuthenticationContextConfig:
             bool: True if the LDAP server support an anonymous bind; otherwise, False.
         """
         return (
-            os.getenv("AD_LDAP_ANONYMOUS_BIND")
+            os.getenv("AD_LDAP_ANONYMOUS_BIND").lower() in ['true', '1']
             if "AD_LDAP_ANONYMOUS_BIND" in os.environ
             else self._config.get("ldap", {}).get("anonymous_bind", False)
         )
@@ -227,7 +254,7 @@ class AuthenticationContextConfig:
             bool: True if nested groups are included; otherwise, False.
         """
         return (
-            os.getenv("AD_LDAP_NESTED_GROUPS")
+            os.getenv("AD_LDAP_NESTED_GROUPS").lower() in ['true', '1']
             if "AD_LDAP_NESTED_GROUPS" in os.environ
             else self._config.get("ldap", {}).get("nested_groups", False)
         )
@@ -248,23 +275,6 @@ class AuthenticationContextConfig:
             )
             and self.ldap_search_base
         )
-
-
-class ActiveDirectoryError(Exception):
-    """Raised when an error occurs in any Active Directory operation. Here, these include communication
-    with the KDC (via GSSAPI) and LDAP operations.
-
-    Args:
-        Exception (_type_): This error is a subclass of the built-in Exception class.
-    """
-
-    def __init__(self, message: str):
-        """Initializes a new Active Directory error.
-
-        Args:
-            message (str): The error message.
-        """
-        super().__init__(message)
 
 
 class ActiveDirectoryPrincipal:
@@ -295,9 +305,9 @@ class ActiveDirectoryPrincipal:
             sam_account_name if sam_account_name else principal.split("@")[0].strip()
         )
         self._user_principal_name = (
-            user_principal_name if user_principal_name else sam_account_name
+            user_principal_name if user_principal_name else self._sam_account_name
         )
-        self._display_name = display_name
+        self._display_name = display_name if display_name else self._sam_account_name
         self._groups = groups.copy() if (groups and len(groups) > 0) else groups
         self._roles = role_mapper(self._groups)
 
